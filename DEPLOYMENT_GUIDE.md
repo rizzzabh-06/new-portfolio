@@ -46,11 +46,17 @@ This guide covers how to set up an AWS EC2 instance, configure DNS on Ionos, and
 Open your terminal on your local machine.
 
 ### Connect to Server
+Run these commands locally to secure your key and connect:
+
 ```bash
-# Set permission for key (only needed once)
+# 1. Move the key to your .ssh folder (creates it if missing)
+mkdir -p ~/.ssh
+mv ~/Downloads/portfolio-key.pem ~/.ssh/
+
+# 2. Set permission for key (required for security)
 chmod 400 ~/.ssh/portfolio-key.pem
 
-# SSH into the server
+# 3. SSH into the server (Replace YOUR_EC2_IP with your actual IP)
 ssh -i "~/.ssh/portfolio-key.pem" ubuntu@YOUR_EC2_IP
 ```
 
