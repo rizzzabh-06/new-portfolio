@@ -1,7 +1,8 @@
 services:
   portfolio:
-    build: .
+    image: ghcr.io/rizzzabh-06/new-portfolio:latest
     container_name: portfolio
+    pull_policy: always
     restart: always
     expose:
       - "3000"

@@ -111,13 +111,50 @@ docker compose up -d
 - Open your browser and go to `https://rishabhrajsingh.com`.
 - You should see your portfolio secure (padlock icon) and running!
 
+
 ## Updating the Site
-When you push changes to GitHub, deploy them by running:
+When you push changes to GitHub:
+1. GitHub Actions will automatically build a new Docker image
+2. Deploy the update on the server:
 
 ```bash
 # On the server:
 cd new-portfolio
 git pull
-docker compose build --no-cache
+docker compose pull
 docker compose up -d
 ```
+
+## Troubleshooting
+
+### EC2 Instance Frozen or Unreachable
+If your EC2 instance becomes unresponsive:
+1. Go to [AWS EC2 Console](https://console.aws.amazon.com/ec2)
+2. Find your instance `portfolio-server`
+3. **Actions → Instance State → Reboot**
+4. Wait 1-2 minutes and try reconnecting via SSH
+
+### First Time Setup After Reboot
+If you had to restart the EC2 instance before completing initial setup:
+```bash
+# Reconnect to server
+ssh -i "~/.ssh/portfolio.pem" ubuntu@YOUR_EC2_IP
+
+# Navigate to project
+cd new-portfolio
+
+# Pull the pre-built image (no building needed!)
+docker compose pull
+
+# Run SSL setup
+sudo ./deploy/init-letsencrypt.sh
+
+# Start the application
+docker compose up -d
+```
+
+### Checking Build Status
+- Visit your GitHub repository → **Actions** tab
+- You should see the "Build and Push Docker Image" workflow
+- It runs automatically on every push to `main` branch
+
